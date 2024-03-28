@@ -1,7 +1,7 @@
 package com.github.beltraliny.testeuex.services;
 
-import com.github.beltraliny.testeuex.models.user.User;
-import com.github.beltraliny.testeuex.models.user.UserDTO;
+import com.github.beltraliny.testeuex.models.User;
+import com.github.beltraliny.testeuex.models.dtos.UserDTO;
 import com.github.beltraliny.testeuex.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 

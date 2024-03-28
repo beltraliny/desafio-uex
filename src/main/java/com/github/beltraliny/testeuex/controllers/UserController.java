@@ -1,7 +1,7 @@
 package com.github.beltraliny.testeuex.controllers;
 
-import com.github.beltraliny.testeuex.models.user.User;
-import com.github.beltraliny.testeuex.models.user.UserDTO;
+import com.github.beltraliny.testeuex.models.User;
+import com.github.beltraliny.testeuex.models.dtos.UserDTO;
 import com.github.beltraliny.testeuex.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +23,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> create(@RequestBody UserDTO userDTO) {
-        UUID userId = this.userService.create(userDTO);
-        return ResponseEntity.created(URI.create("/api/users/" + userId.toString())).build();
+        UUID id = this.userService.create(userDTO);
+        return ResponseEntity.created(URI.create("/api/users/" + id.toString())).build();
     }
 
     @GetMapping("/{id}")
