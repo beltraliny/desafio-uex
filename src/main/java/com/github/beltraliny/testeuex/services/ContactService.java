@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -30,5 +31,16 @@ public class ContactService {
         newContact.setUser(user);
 
         return this.contactRepository.save(newContact).getId();
+    }
+
+    public List<ContactDTO> list(String userId) {
+        User user = this.userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        List<ContactDTO> contactDTOList = user.getContactList()
+                .stream()
+                .map(contact -> new ContactDTO(contact.getName(), contact.getCpf()))
+                .toList();
+        return contactDTOList;
     }
 }

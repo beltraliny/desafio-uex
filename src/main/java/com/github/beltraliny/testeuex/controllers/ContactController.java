@@ -32,8 +32,9 @@ public class ContactController {
     }
 
     @GetMapping("/{userId}/contacts")
-    public ResponseEntity<List<Contact>> list(@PathVariable String userId) {
-        return null;
+    public ResponseEntity<List<ContactDTO>> list(@PathVariable String userId) {
+        List<ContactDTO> contactList = this.contactService.list(userId);
+        return ResponseEntity.ok(contactList);
     }
 
     @PutMapping("/{userId}/contacts/{id}")
