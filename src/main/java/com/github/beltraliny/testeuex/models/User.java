@@ -1,10 +1,12 @@
-package com.github.beltraliny.testeuex.models.user;
+package com.github.beltraliny.testeuex.models;
 
+import com.github.beltraliny.testeuex.models.dtos.UserDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +20,9 @@ public class User {
     private String username;
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Contact> contactList;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -78,5 +83,13 @@ public class User {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Contact> getContactList() {
+        return contactList;
+    }
+
+    public void setContactList(List<Contact> contactList) {
+        this.contactList = contactList;
     }
 }
