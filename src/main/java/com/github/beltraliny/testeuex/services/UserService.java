@@ -24,16 +24,16 @@ public class UserService {
         return savedUser.getUserId();
     }
 
-    public Optional<User> findById(String userId) {
-        return this.userRepository.findById(UUID.fromString(userId));
+    public Optional<User> findById(String id) {
+        return this.userRepository.findById(UUID.fromString(id));
     }
 
     public List<User> list() {
         return userRepository.findAll();
     }
 
-    public void update(String userId, UserDTO userDTO) {
-        UUID userUUID = UUID.fromString(userId);
+    public void update(String id, UserDTO userDTO) {
+        UUID userUUID = UUID.fromString(id);
 
         Optional<User> user = this.userRepository.findById(userUUID);
         if (user.isEmpty()) return;
@@ -46,8 +46,8 @@ public class UserService {
         this.userRepository.save(userToBeUpdated);
     }
 
-    public void delete(String userId) {
-        UUID userUUID = UUID.fromString(userId);
+    public void delete(String id) {
+        UUID userUUID = UUID.fromString(id);
 
         boolean userExists = this.userRepository.existsById(userUUID);
         if (!userExists) return;

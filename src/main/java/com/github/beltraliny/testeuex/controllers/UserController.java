@@ -27,9 +27,9 @@ public class UserController {
         return ResponseEntity.created(URI.create("/api/users/" + userId.toString())).build();
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> findById(@PathVariable("userId") String userId) {
-        Optional<User> user = this.userService.findById(userId);
+    @GetMapping("/{id}")
+    public ResponseEntity<User> findById(@PathVariable("id") String id) {
+        Optional<User> user = this.userService.findById(id);
 
         if(!user.isPresent()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(user.get());
@@ -41,15 +41,15 @@ public class UserController {
         return ResponseEntity.ok(userList);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<Void> update(@PathVariable String userId, @RequestBody UserDTO userDTO) {
-        this.userService.update(userId, userDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody UserDTO userDTO) {
+        this.userService.update(id, userDTO);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> delete(@PathVariable String userId) {
-        this.userService.delete(userId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        this.userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
