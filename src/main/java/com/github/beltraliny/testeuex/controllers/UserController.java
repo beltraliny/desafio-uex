@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -23,8 +22,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> create(@RequestBody UserDTO userDTO) {
-        UUID id = this.userService.create(userDTO);
-        return ResponseEntity.created(URI.create("/api/users/" + id.toString())).build();
+        String newUserId = this.userService.create(userDTO);
+        return ResponseEntity.created(URI.create("/api/users/" + newUserId)).build();
     }
 
     @GetMapping("/{id}")

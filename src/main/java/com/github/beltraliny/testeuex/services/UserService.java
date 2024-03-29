@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -18,14 +17,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UUID create(UserDTO userDTO) {
+    public String create(UserDTO userDTO) {
         User newUser = new User(userDTO);
         User savedUser = this.userRepository.save(newUser);
         return savedUser.getId();
     }
 
     public Optional<User> findById(String id) {
-        return this.userRepository.findById(UUID.fromString(id));
+        return this.userRepository.findById(id);
     }
 
     public List<User> list() {
@@ -33,25 +32,21 @@ public class UserService {
     }
 
     public void update(String id, UserDTO userDTO) {
-        UUID userUUID = UUID.fromString(id);
-
-        Optional<User> user = this.userRepository.findById(userUUID);
+        Optional<User> user = this.userRepository.findById(id);
         if (user.isEmpty()) return;
 
         User userToBeUpdated = user.get();
+        if (!userDTO.name().isEmpty()) userToBeUpdated.setName(userDTO.name());
         if (!userDTO.username().isEmpty()) userToBeUpdated.setUsername(userDTO.username());
-        if (!userDTO.email().isEmpty()) userToBeUpdated.setEmail(userDTO.email());
         if (!userDTO.password().isEmpty()) userToBeUpdated.setPassword(userDTO.password());
 
         this.userRepository.save(userToBeUpdated);
     }
 
     public void delete(String id) {
-        UUID userUUID = UUID.fromString(id);
-
-        boolean userExists = this.userRepository.existsById(userUUID);
+        boolean userExists = this.userRepository.existsById(id);
         if (!userExists) return;
 
-        this.userRepository.deleteById(userUUID);
+        this.userRepository.deleteById(id);
     }
 }

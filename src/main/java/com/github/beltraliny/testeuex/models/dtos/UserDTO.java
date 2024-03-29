@@ -1,4 +1,4 @@
 package com.github.beltraliny.testeuex.models.dtos;
 
-public record UserDTO(String username, String email, String password) {
+public record UserDTO(String name, String username, String password) {
 }

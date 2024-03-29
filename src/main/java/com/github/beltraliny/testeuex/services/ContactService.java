@@ -24,7 +24,7 @@ public class ContactService {
     }
 
     public UUID create(String userId, ContactDTO contactDTO) {
-        User user = this.userRepository.findById(UUID.fromString(userId))
+        User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         Contact newContact = new Contact(contactDTO);
@@ -34,14 +34,14 @@ public class ContactService {
     }
 
     public Contact findById(String userId, String id) {
-        User user = this.userRepository.findById(UUID.fromString(userId))
+        User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return this.contactRepository.findByUserAndId(user, UUID.fromString(id));
     }
 
     public List<Contact> list(String userId) {
-        User user = this.userRepository.findById(UUID.fromString(userId))
+        User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return user.getContactList();
