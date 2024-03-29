@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ContactService {
@@ -23,7 +22,7 @@ public class ContactService {
         this.userRepository = userRepository;
     }
 
-    public UUID create(String userId, ContactDTO contactDTO) {
+    public String create(String userId, ContactDTO contactDTO) {
         User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -37,7 +36,7 @@ public class ContactService {
         User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        return this.contactRepository.findByUserAndId(user, UUID.fromString(id));
+        return this.contactRepository.findByUserAndId(user, id);
     }
 
     public List<Contact> list(String userId) {

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,8 +21,8 @@ public class ContactController {
 
     @PostMapping("/{userId}/contacts")
     public ResponseEntity<Contact> create(@PathVariable String userId, @RequestBody ContactDTO contactDTO) {
-        UUID id = this.contactService.create(userId, contactDTO);
-        return ResponseEntity.created(URI.create("/api/users/" + userId + "/contact/" + id.toString())).build();
+        String newContactId = this.contactService.create(userId, contactDTO);
+        return ResponseEntity.created(URI.create("/api/users/" + userId + "/contact/" + newContactId)).build();
     }
 
     @GetMapping("/{userId}/contacts/{id}")

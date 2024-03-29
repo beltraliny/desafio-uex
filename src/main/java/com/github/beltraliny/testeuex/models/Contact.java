@@ -4,15 +4,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.github.beltraliny.testeuex.models.dtos.ContactDTO;
 import jakarta.persistence.*;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "contacts")
 public class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     private String name;
     private String cpf;
@@ -29,11 +27,11 @@ public class Contact {
         this.cpf = contactDTO.cpf();
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
