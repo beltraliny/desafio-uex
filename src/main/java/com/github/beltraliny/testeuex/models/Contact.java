@@ -1,6 +1,6 @@
 package com.github.beltraliny.testeuex.models;
 
-import com.github.beltraliny.testeuex.models.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.github.beltraliny.testeuex.models.dtos.ContactDTO;
 import jakarta.persistence.*;
 
@@ -19,6 +19,7 @@ public class Contact {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     public Contact() { }

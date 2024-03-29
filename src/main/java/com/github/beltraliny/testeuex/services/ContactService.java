@@ -33,6 +33,13 @@ public class ContactService {
         return this.contactRepository.save(newContact).getId();
     }
 
+    public Contact findById(String userId, String id) {
+        User user = this.userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return this.contactRepository.findByUserAndId(user, UUID.fromString(id));
+    }
+
     public List<ContactDTO> list(String userId) {
         User user = this.userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

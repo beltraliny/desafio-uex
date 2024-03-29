@@ -21,7 +21,7 @@ public class UserService {
     public UUID create(UserDTO userDTO) {
         User newUser = new User(userDTO);
         User savedUser = this.userRepository.save(newUser);
-        return savedUser.getUserId();
+        return savedUser.getId();
     }
 
     public Optional<User> findById(String id) {

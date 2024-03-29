@@ -28,7 +28,8 @@ public class ContactController {
 
     @GetMapping("/{userId}/contacts/{id}")
     public ResponseEntity<Contact> findById(@PathVariable String userId, @PathVariable String id) {
-        return null;
+        Contact contact = this.contactService.findById(userId, id);
+        return ResponseEntity.ok(contact);
     }
 
     @GetMapping("/{userId}/contacts")

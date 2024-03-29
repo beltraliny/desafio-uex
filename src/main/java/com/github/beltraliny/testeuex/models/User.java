@@ -15,7 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID userId;
+    private UUID id;
 
     private String username;
     private String email;
@@ -37,12 +37,12 @@ public class User {
         this.password = userDTO.password();
     }
 
-    public UUID getUserId() {
-        return userId;
+    public UUID getId() {
+        return id;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setId(UUID userId) {
+        this.id = userId;
     }
 
     public String getUsername() {
