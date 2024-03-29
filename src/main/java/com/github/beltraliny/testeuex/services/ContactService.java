@@ -40,14 +40,10 @@ public class ContactService {
         return this.contactRepository.findByUserAndId(user, UUID.fromString(id));
     }
 
-    public List<ContactDTO> list(String userId) {
+    public List<Contact> list(String userId) {
         User user = this.userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        List<ContactDTO> contactDTOList = user.getContactList()
-                .stream()
-                .map(contact -> new ContactDTO(contact.getName(), contact.getCpf()))
-                .toList();
-        return contactDTOList;
+        return user.getContactList();
     }
 }
