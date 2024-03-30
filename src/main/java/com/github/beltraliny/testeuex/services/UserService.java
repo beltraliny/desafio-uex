@@ -3,6 +3,7 @@ package com.github.beltraliny.testeuex.services;
 import com.github.beltraliny.testeuex.models.User;
 import com.github.beltraliny.testeuex.models.dtos.UserDTO;
 import com.github.beltraliny.testeuex.repositories.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,19 +13,26 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public String create(UserDTO userDTO) {
+    public User create(UserDTO userDTO) {
         User newUser = new User(userDTO);
-        User savedUser = this.userRepository.save(newUser);
-        return savedUser.getId();
+        newUser.setPassword(this.passwordEncoder.encode(userDTO.password()));
+
+        return this.userRepository.save(newUser);
     }
 
     public Optional<User> findById(String id) {
         return this.userRepository.findById(id);
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return this.userRepository.findByUsername(username);
     }
 
     public List<User> list() {

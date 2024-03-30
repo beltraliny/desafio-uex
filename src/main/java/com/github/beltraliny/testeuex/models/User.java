@@ -33,7 +33,6 @@ public class User {
     public User(UserDTO userDTO) {
         this.name = userDTO.name();
         this.username = userDTO.username();
-        this.password = userDTO.password();
     }
 
     public String getId() {
