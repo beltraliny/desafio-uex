@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+
+@Component
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final UserRepository userRepository;
@@ -33,14 +36,15 @@ public class SecurityFilter extends OncePerRequestFilter {
         String token = this.retrieveTokenFromAuthorizationHeader(request);
         String username = this.tokenService.validateToken(token);
 
-        if (username == null) return;
+        if (username != null) {
+            User user = this.userRepository.findByUsername(username)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            List<SimpleGrantedAuthority> authorityList = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, authorityList);
 
-        User user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        List<SimpleGrantedAuthority> authorityList = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, authorityList);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
 
