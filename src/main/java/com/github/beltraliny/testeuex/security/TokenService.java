@@ -35,8 +35,13 @@ public class TokenService {
         }
     }
 
-    public String validateToken(String token) {
+    public String validateTokenAndRetrieveUsername(String authorizationHeaderToken) {
+        final String tokenPrefix = "Bearer ";
+
         try {
+            if (authorizationHeaderToken == null) return null;
+
+            String token = authorizationHeaderToken.replace(tokenPrefix, "");
             Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
             String username = JWT.require(algorithm)

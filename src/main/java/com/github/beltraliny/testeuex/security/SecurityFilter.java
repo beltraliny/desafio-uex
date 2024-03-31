@@ -33,8 +33,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = this.retrieveTokenFromAuthorizationHeader(request);
-        String username = this.tokenService.validateToken(token);
+        String username = this.tokenService.validateTokenAndRetrieveUsername(request.getHeader("Authorization"));
 
         if (username != null) {
             User user = this.userRepository.findByUsername(username)
@@ -46,13 +45,5 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    private String retrieveTokenFromAuthorizationHeader(HttpServletRequest request) {
-        final String tokenPrefix = "Bearer ";
-        String authorizationHeader = request.getHeader("Authorization");
-
-        if (authorizationHeader == null) return null;
-        return authorizationHeader.replace(tokenPrefix, "");
     }
 }
