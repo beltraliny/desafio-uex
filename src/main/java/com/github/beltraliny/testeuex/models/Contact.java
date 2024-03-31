@@ -14,6 +14,16 @@ public class Contact {
 
     private String name;
     private String cpf;
+    private String phoneNumber;
+    private String street;
+    private String number;
+    private String neighborhood;
+    private String state;
+    private String country;
+    private String complement;
+    private String postalCode;
+    private String latitude;
+    private String longitude;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -25,6 +35,16 @@ public class Contact {
     public Contact(ContactDTO contactDTO) {
         this.name = contactDTO.name();
         this.cpf = contactDTO.cpf();
+        this.phoneNumber = contactDTO.phoneNumber();
+        this.street = contactDTO.street();
+        this.number = contactDTO.number();
+        this.neighborhood = contactDTO.neighborhood();
+        this.state = contactDTO.state();
+        this.country = contactDTO.country();
+        this.complement = contactDTO.complement();
+        this.postalCode = contactDTO.postalCode();
+        this.latitude = contactDTO.latitude();
+        this.longitude = contactDTO.longitude();
     }
 
     public String getId() {
@@ -49,6 +69,86 @@ public class Contact {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getComplement() {
+        return complement;
+    }
+
+    public void setComplement(String complement) {
+        this.complement = complement;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public User getUser() {
