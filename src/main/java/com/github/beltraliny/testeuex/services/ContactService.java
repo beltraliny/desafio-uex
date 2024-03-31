@@ -6,6 +6,7 @@ import com.github.beltraliny.testeuex.models.dtos.ContactDTO;
 import com.github.beltraliny.testeuex.repositories.ContactRepository;
 import com.github.beltraliny.testeuex.repositories.UserRepository;
 import com.github.beltraliny.testeuex.security.TokenService;
+import com.github.beltraliny.testeuex.utils.CpfUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,6 +34,9 @@ public class ContactService {
         Contact newContact = new Contact(contactDTO);
         newContact.setUser(user);
 
+        boolean isValid = this.validateBeforeSave(newContact);
+        if (!isValid) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
         return this.contactRepository.save(newContact);
     }
 
@@ -49,5 +53,9 @@ public class ContactService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return user.getContactList();
+    }
+
+    private boolean validateBeforeSave(Contact contact) {
+        return CpfUtils.isValid(contact.getCpf());
     }
 }
