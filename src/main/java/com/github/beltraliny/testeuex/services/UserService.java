@@ -2,9 +2,12 @@ package com.github.beltraliny.testeuex.services;
 
 import com.github.beltraliny.testeuex.models.User;
 import com.github.beltraliny.testeuex.models.dtos.UserDTO;
+import com.github.beltraliny.testeuex.models.dtos.UserResponseDTO;
 import com.github.beltraliny.testeuex.repositories.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +30,10 @@ public class UserService {
         return this.userRepository.save(newUser);
     }
 
-    public Optional<User> findById(String id) {
-        return this.userRepository.findById(id);
+    public UserResponseDTO findById(String id) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return new UserResponseDTO(user.getName(), user.getUsername());
     }
 
     public Optional<User> findByUsername(String username) {
@@ -40,13 +45,12 @@ public class UserService {
     }
 
     public void update(String id, UserDTO userDTO) {
-        Optional<User> user = this.userRepository.findById(id);
-        if (user.isEmpty()) return;
+        User userToBeUpdated = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        User userToBeUpdated = user.get();
-        if (!userDTO.name().isEmpty()) userToBeUpdated.setName(userDTO.name());
-        if (!userDTO.username().isEmpty()) userToBeUpdated.setUsername(userDTO.username());
-        if (!userDTO.password().isEmpty()) userToBeUpdated.setPassword(userDTO.password());
+        if (userDTO.name() != null) userToBeUpdated.setName(userDTO.name());
+        if (userDTO.username() != null) userToBeUpdated.setUsername(userDTO.username());
+        if (userDTO.password() != null) userToBeUpdated.setPassword(userDTO.password());
 
         this.userRepository.save(userToBeUpdated);
     }

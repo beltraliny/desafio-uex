@@ -2,13 +2,12 @@ package com.github.beltraliny.testeuex.controllers;
 
 import com.github.beltraliny.testeuex.models.User;
 import com.github.beltraliny.testeuex.models.dtos.UserDTO;
+import com.github.beltraliny.testeuex.models.dtos.UserResponseDTO;
 import com.github.beltraliny.testeuex.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -20,18 +19,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<User> create(@RequestBody UserDTO userDTO) {
-        User newUser = this.userService.create(userDTO);
-        return ResponseEntity.created(URI.create("/api/users/" + newUser.getId())).build();
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable("id") String id) {
-        Optional<User> user = this.userService.findById(id);
-
-        if(!user.isPresent()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(user.get());
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable("id") String id) {
+        UserResponseDTO userResponseDTO = this.userService.findById(id);
+        return ResponseEntity.ok(userResponseDTO);
     }
 
     @GetMapping
