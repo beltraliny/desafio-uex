@@ -12,8 +12,10 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private String name;
+    @Column(unique = true)
     private String cpf;
+
+    private String name;
     private String phoneNumber;
     private String street;
     private String number;
