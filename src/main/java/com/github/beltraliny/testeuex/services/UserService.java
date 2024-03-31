@@ -58,14 +58,12 @@ public class UserService {
     }
 
     public void update(String id, UserRequestDTO userRequestDTO) {
-        User userToBeUpdated = this.userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        User user = this.parseUserToBeUpdated(userRequestDTO, id);
 
-        if (userRequestDTO.name() != null) userToBeUpdated.setName(userRequestDTO.name());
-        if (userRequestDTO.username() != null) userToBeUpdated.setUsername(userRequestDTO.username());
-        if (userRequestDTO.password() != null) userToBeUpdated.setPassword(userRequestDTO.password());
+        boolean isValid = this.validateBeforeSave(user);
+        if (!isValid) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        this.userRepository.save(userToBeUpdated);
+        this.userRepository.save(user);
     }
 
     public void delete(UserRequestDTO userRequestDTO, String id) {
@@ -80,11 +78,31 @@ public class UserService {
     }
 
     private User parseUser(UserRequestDTO userRequestDTO) {
-        User user = new User(userRequestDTO);
+        User parsedUser = new User(userRequestDTO);
         if (userRequestDTO.password() != null){
-            user.setPassword(this.passwordEncoder.encode(userRequestDTO.password()));
+            parsedUser.setPassword(this.passwordEncoder.encode(userRequestDTO.password()));
         }
-        return user;
+        return parsedUser;
+    }
+
+    private User parseUserToBeUpdated(UserRequestDTO userRequestDTO, String id) {
+        User parsedUser = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (userRequestDTO.name() != null) parsedUser.setName(userRequestDTO.name());
+
+        if (userRequestDTO.username() != null) {
+            boolean usernameAlreadyInUse = this.userRepository.existsByUsernameAndIdNot(userRequestDTO.username(), id);
+            if (usernameAlreadyInUse) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+            parsedUser.setUsername(userRequestDTO.username());
+        };
+
+        if (userRequestDTO.password() != null) {
+            parsedUser.setPassword(this.passwordEncoder.encode(userRequestDTO.password()));
+        };
+
+        return parsedUser;
     }
 
     private boolean validateBeforeSave(User user) {

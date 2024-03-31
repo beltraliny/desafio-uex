@@ -106,21 +106,21 @@ public class ContactService {
     }
 
     private Contact parseContactToBeUpdated(ContactDTO contactDTO, User user, String id) {
-        Contact contact = this.contactRepository.findByUserAndId(user, id)
+        Contact parsedContact = this.contactRepository.findByUserAndId(user, id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (contactDTO.name() != null)  contact.setName(contactDTO.name());
-        if (contactDTO.phoneNumber() != null)  contact.setPhoneNumber(contactDTO.phoneNumber());
-        if (contactDTO.street() != null)  contact.setStreet(contactDTO.street());
-        if (contactDTO.number() != null)  contact.setNumber(contactDTO.number());
-        if (contactDTO.neighborhood() != null)  contact.setNeighborhood(contactDTO.neighborhood());
-        if (contactDTO.city() != null)  contact.setCity(contactDTO.city());
-        if (contactDTO.state() != null)  contact.setState(contactDTO.state());
-        if (contactDTO.country() != null)  contact.setCountry(contactDTO.country());
-        if (contactDTO.complement() != null)  contact.setComplement(contactDTO.complement());
-        if (contactDTO.postalCode() != null)  contact.setPostalCode(contactDTO.postalCode());
+        if (contactDTO.name() != null)  parsedContact.setName(contactDTO.name());
+        if (contactDTO.phoneNumber() != null)  parsedContact.setPhoneNumber(contactDTO.phoneNumber());
+        if (contactDTO.street() != null)  parsedContact.setStreet(contactDTO.street());
+        if (contactDTO.number() != null)  parsedContact.setNumber(contactDTO.number());
+        if (contactDTO.neighborhood() != null)  parsedContact.setNeighborhood(contactDTO.neighborhood());
+        if (contactDTO.city() != null)  parsedContact.setCity(contactDTO.city());
+        if (contactDTO.state() != null)  parsedContact.setState(contactDTO.state());
+        if (contactDTO.country() != null)  parsedContact.setCountry(contactDTO.country());
+        if (contactDTO.complement() != null)  parsedContact.setComplement(contactDTO.complement());
+        if (contactDTO.postalCode() != null)  parsedContact.setPostalCode(contactDTO.postalCode());
 
-        return contact;
+        return parsedContact;
     }
 
     private User retrieveUserFromToken(String token) {
