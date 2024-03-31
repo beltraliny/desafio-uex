@@ -39,9 +39,6 @@ public class AuthService {
     }
 
     public LoginResponseDTO register(UserRequestDTO userRequestDTO) {
-        Optional<User> user = this.userService.findByUsername(userRequestDTO.username());
-        if (user.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
         User newUser = this.userService.create(userRequestDTO);
         String token = this.tokenService.createToken(newUser);
 

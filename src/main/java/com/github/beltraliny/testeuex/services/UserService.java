@@ -28,8 +28,12 @@ public class UserService {
     }
 
     public User create(UserRequestDTO userRequestDTO) {
-        User newUser = new User(userRequestDTO);
-        newUser.setPassword(this.passwordEncoder.encode(userRequestDTO.password()));
+        Optional<User> user = this.findByUsername(userRequestDTO.username());
+        if (user.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        User newUser = this.parseUser(userRequestDTO);
+        boolean isValid = this.validateBeforeSave(newUser);
+        if (!isValid) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         return this.userRepository.save(newUser);
     }
@@ -73,5 +77,19 @@ public class UserService {
 
         this.contactService.deleteByUser(user);
         this.userRepository.deleteById(id);
+    }
+
+    private User parseUser(UserRequestDTO userRequestDTO) {
+        User user = new User(userRequestDTO);
+        if (userRequestDTO.password() != null){
+            user.setPassword(this.passwordEncoder.encode(userRequestDTO.password()));
+        }
+        return user;
+    }
+
+    private boolean validateBeforeSave(User user) {
+        if (user.getUsername() == null || user.getUsername().isEmpty()) return false;
+        if (user.getPassword() == null || user.getPassword().isEmpty()) return false;
+        return true;
     }
 }

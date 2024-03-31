@@ -78,16 +78,16 @@ public class ContactService {
     }
 
     private boolean validateBeforeSave(Contact contact) {
-        if (contact.getName() == null) return false;
-        if (contact.getCpf() == null) return false;
-        if (contact.getPhoneNumber() == null) return false;
-        if (contact.getStreet() == null) return false;
-        if (contact.getNumber() == null) return false;
-        if (contact.getNeighborhood() == null) return false;
-        if (contact.getCity() == null) return false;
-        if (contact.getState() == null) return false;
-        if (contact.getCountry() == null) return false;
-        if (contact.getPostalCode() == null) return false;
+        if (contact.getName() == null || contact.getName().isEmpty()) return false;
+        if (contact.getCpf() == null || contact.getCpf().isEmpty()) return false;
+        if (contact.getPhoneNumber() == null || contact.getPhoneNumber().isEmpty()) return false;
+        if (contact.getStreet() == null || contact.getStreet().isEmpty()) return false;
+        if (contact.getNumber() == null || contact.getNumber().isEmpty()) return false;
+        if (contact.getNeighborhood() == null || contact.getNeighborhood().isEmpty()) return false;
+        if (contact.getCity() == null || contact.getCity().isEmpty()) return false;
+        if (contact.getState() == null || contact.getState().isEmpty()) return false;
+        if (contact.getCountry() == null || contact.getCountry().isEmpty()) return false;
+        if (contact.getPostalCode() == null || contact.getPostalCode().isEmpty()) return false;
 
         return CpfUtils.isValid(contact.getCpf());
     }
