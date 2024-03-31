@@ -14,5 +14,7 @@ public interface ContactRepository extends JpaRepository<Contact, String> {
 
     void deleteByUserAndId(User user, String id);
 
+    void deleteByUser(User user);
+
     boolean existsByUserAndCpf(User user, String cpf);
 }

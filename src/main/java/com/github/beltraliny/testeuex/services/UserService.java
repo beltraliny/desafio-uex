@@ -17,12 +17,14 @@ import java.util.Optional;
 @Transactional
 public class UserService {
 
+    private final ContactService contactService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ContactService contactService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.contactService = contactService;
     }
 
     public User create(UserRequestDTO userRequestDTO) {
@@ -62,10 +64,14 @@ public class UserService {
         this.userRepository.save(userToBeUpdated);
     }
 
-    public void delete(String id) {
-        boolean userExists = this.userRepository.existsById(id);
-        if (!userExists) return;
+    public void delete(UserRequestDTO userRequestDTO, String id) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+        boolean isPasswordMatch = this.passwordEncoder.matches(userRequestDTO.password(), user.getPassword());
+        if (!isPasswordMatch) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        this.contactService.deleteByUser(user);
         this.userRepository.deleteById(id);
     }
 }

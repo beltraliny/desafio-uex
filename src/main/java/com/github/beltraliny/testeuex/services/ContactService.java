@@ -73,6 +73,10 @@ public class ContactService {
         this.contactRepository.deleteByUserAndId(user, id);
     }
 
+    public void deleteByUser(User user) {
+        this.contactRepository.deleteByUser(user);
+    }
+
     private boolean validateBeforeSave(Contact contact) {
         if (contact.getName() == null) return false;
         if (contact.getCpf() == null) return false;

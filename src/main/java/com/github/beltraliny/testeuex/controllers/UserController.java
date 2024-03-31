@@ -37,8 +37,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
-        this.userService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable String id, @RequestBody UserRequestDTO userRequestDTO) {
+        this.userService.delete(userRequestDTO, id);
         return ResponseEntity.noContent().build();
     }
 }
