@@ -34,9 +34,7 @@ public class ContactService {
     }
 
     public Contact create(String token, ContactDTO contactDTO) {
-        String username = tokenService.validateTokenAndRetrieveUsername(token);
-        User user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        User user = this.retrieveUserFromToken(token);
 
         boolean contactAlreadyExists = this.contactRepository.existsByUserAndCpf(user, contactDTO.cpf());
         if (contactAlreadyExists) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -50,28 +48,20 @@ public class ContactService {
     }
 
     public Contact findById(String token, String id) {
-        String username = tokenService.validateTokenAndRetrieveUsername(token);
-        User user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+        User user = this.retrieveUserFromToken(token);
         return this.contactRepository.findByUserAndId(user, id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public List<Contact> list(String token) {
-        String username = tokenService.validateTokenAndRetrieveUsername(token);
-        User user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+        User user = this.retrieveUserFromToken(token);
         return user.getContactList();
     }
 
     public void update(String token, ContactDTO contactDTO, String id) {
-        String username = tokenService.validateTokenAndRetrieveUsername(token);
-        User user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+        User user = this.retrieveUserFromToken(token);
         Contact contact = this.parseContactToBeUpdated(contactDTO, user, id);
+
         boolean isValid = this.validateBeforeSave(contact);
         if (!isValid) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
@@ -79,10 +69,7 @@ public class ContactService {
     }
 
     public void delete(String token, String id) {
-        String username = tokenService.validateTokenAndRetrieveUsername(token);
-        User user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+        User user = this.retrieveUserFromToken(token);
         this.contactRepository.deleteByUserAndId(user, id);
     }
 
@@ -130,5 +117,11 @@ public class ContactService {
         if (contactDTO.postalCode() != null)  contact.setPostalCode(contactDTO.postalCode());
 
         return contact;
+    }
+
+    private User retrieveUserFromToken(String token) {
+        String username = tokenService.validateTokenAndRetrieveUsername(token);
+        return this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
