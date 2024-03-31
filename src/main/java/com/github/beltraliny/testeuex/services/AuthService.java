@@ -5,6 +5,7 @@ import com.github.beltraliny.testeuex.models.dtos.LoginRequestDTO;
 import com.github.beltraliny.testeuex.models.dtos.LoginResponseDTO;
 import com.github.beltraliny.testeuex.models.dtos.UserRequestDTO;
 import com.github.beltraliny.testeuex.security.TokenService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class AuthService {
 
     private final UserService userService;

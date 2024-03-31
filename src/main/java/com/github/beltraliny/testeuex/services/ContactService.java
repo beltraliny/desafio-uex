@@ -8,6 +8,7 @@ import com.github.beltraliny.testeuex.repositories.ContactRepository;
 import com.github.beltraliny.testeuex.repositories.UserRepository;
 import com.github.beltraliny.testeuex.security.TokenService;
 import com.github.beltraliny.testeuex.utils.CpfUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class ContactService {
 
     private final ContactRepository contactRepository;
@@ -74,6 +76,14 @@ public class ContactService {
         if (!isValid) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         this.contactRepository.save(contact);
+    }
+
+    public void delete(String token, String id) {
+        String username = tokenService.validateTokenAndRetrieveUsername(token);
+        User user = this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        this.contactRepository.deleteByUserAndId(user, id);
     }
 
     private boolean validateBeforeSave(Contact contact) {

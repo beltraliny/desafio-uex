@@ -3,6 +3,7 @@ package com.github.beltraliny.testeuex.controllers;
 import com.github.beltraliny.testeuex.models.Contact;
 import com.github.beltraliny.testeuex.models.dtos.ContactDTO;
 import com.github.beltraliny.testeuex.services.ContactService;
+import org.aspectj.weaver.patterns.IToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,8 +44,9 @@ public class ContactController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{userId}/contacts/{id}")
-    public ResponseEntity<Contact> delete(@PathVariable String userId, @PathVariable String id) {
-        return null;
+    @DeleteMapping("/contacts/{id}")
+    public ResponseEntity<Void> delete(@RequestHeader("Authorization") String token, @PathVariable String id) {
+        this.contactService.delete(token, id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -4,6 +4,7 @@ import com.github.beltraliny.testeuex.models.User;
 import com.github.beltraliny.testeuex.models.dtos.UserRequestDTO;
 import com.github.beltraliny.testeuex.models.dtos.UserResponseDTO;
 import com.github.beltraliny.testeuex.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;

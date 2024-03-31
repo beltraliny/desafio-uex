@@ -9,6 +9,10 @@ import java.util.Optional;
 
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, String> {
+
     Optional<Contact> findByUserAndId(User user, String id);
+
+    void deleteByUserAndId(User user, String id);
+
     boolean existsByUserAndCpf(User user, String cpf);
 }
