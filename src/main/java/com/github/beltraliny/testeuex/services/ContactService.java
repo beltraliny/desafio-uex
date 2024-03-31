@@ -47,11 +47,13 @@ public class ContactService {
         return this.contactRepository.save(contact);
     }
 
-    public Contact findById(String userId, String id) {
-        User user = this.userRepository.findById(userId)
+    public Contact findById(String token, String id) {
+        String username = tokenService.validateTokenAndRetrieveUsername(token);
+        User user = this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        return this.contactRepository.findByUserAndId(user, id);
+        return this.contactRepository.findByUserAndId(user, id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public List<Contact> list(String token) {
@@ -60,6 +62,18 @@ public class ContactService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return user.getContactList();
+    }
+
+    public void update(String token, ContactDTO contactDTO, String id) {
+        String username = tokenService.validateTokenAndRetrieveUsername(token);
+        User user = this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Contact contact = this.parseContactToBeUpdated(contactDTO, user, id);
+        boolean isValid = this.validateBeforeSave(contact);
+        if (!isValid) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        this.contactRepository.save(contact);
     }
 
     private boolean validateBeforeSave(Contact contact) {
@@ -88,5 +102,23 @@ public class ContactService {
         }
 
         return parsedContact;
+    }
+
+    private Contact parseContactToBeUpdated(ContactDTO contactDTO, User user, String id) {
+        Contact contact = this.contactRepository.findByUserAndId(user, id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (contactDTO.name() != null)  contact.setName(contactDTO.name());
+        if (contactDTO.phoneNumber() != null)  contact.setPhoneNumber(contactDTO.phoneNumber());
+        if (contactDTO.street() != null)  contact.setStreet(contactDTO.street());
+        if (contactDTO.number() != null)  contact.setNumber(contactDTO.number());
+        if (contactDTO.neighborhood() != null)  contact.setNeighborhood(contactDTO.neighborhood());
+        if (contactDTO.city() != null)  contact.setCity(contactDTO.city());
+        if (contactDTO.state() != null)  contact.setState(contactDTO.state());
+        if (contactDTO.country() != null)  contact.setCountry(contactDTO.country());
+        if (contactDTO.complement() != null)  contact.setComplement(contactDTO.complement());
+        if (contactDTO.postalCode() != null)  contact.setPostalCode(contactDTO.postalCode());
+
+        return contact;
     }
 }

@@ -25,9 +25,9 @@ public class ContactController {
         return ResponseEntity.ok(newContact);
     }
 
-    @GetMapping("/{userId}/contacts/{id}")
-    public ResponseEntity<Contact> findById(@PathVariable String userId, @PathVariable String id) {
-        Contact contact = this.contactService.findById(userId, id);
+    @GetMapping("/contacts/{id}")
+    public ResponseEntity<Contact> findById(@RequestHeader("Authorization") String token, @PathVariable String id) {
+        Contact contact = this.contactService.findById(token, id);
         return ResponseEntity.ok(contact);
     }
 
@@ -37,9 +37,10 @@ public class ContactController {
         return ResponseEntity.ok(contactList);
     }
 
-    @PutMapping("/{userId}/contacts/{id}")
-    public ResponseEntity<Contact> update(@PathVariable String userId, @PathVariable String id, @RequestBody ContactDTO contactDTO) {
-        return null;
+    @PutMapping("/contacts/{id}")
+    public ResponseEntity<Void> update(@RequestHeader("Authorization") String token, @PathVariable String id, @RequestBody ContactDTO contactDTO) {
+        this.contactService.update(token, contactDTO, id);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{userId}/contacts/{id}")
