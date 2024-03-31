@@ -1,7 +1,6 @@
 package com.github.beltraliny.testeuex.controllers;
 
-import com.github.beltraliny.testeuex.models.User;
-import com.github.beltraliny.testeuex.models.dtos.UserDTO;
+import com.github.beltraliny.testeuex.models.dtos.UserRequestDTO;
 import com.github.beltraliny.testeuex.models.dtos.UserResponseDTO;
 import com.github.beltraliny.testeuex.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +31,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody UserDTO userDTO) {
-        this.userService.update(id, userDTO);
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody UserRequestDTO userRequestDTO) {
+        this.userService.update(id, userRequestDTO);
         return ResponseEntity.noContent().build();
     }
 

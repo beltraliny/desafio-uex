@@ -1,7 +1,7 @@
 package com.github.beltraliny.testeuex.services;
 
 import com.github.beltraliny.testeuex.models.User;
-import com.github.beltraliny.testeuex.models.dtos.UserDTO;
+import com.github.beltraliny.testeuex.models.dtos.UserRequestDTO;
 import com.github.beltraliny.testeuex.models.dtos.UserResponseDTO;
 import com.github.beltraliny.testeuex.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -23,9 +23,9 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User create(UserDTO userDTO) {
-        User newUser = new User(userDTO);
-        newUser.setPassword(this.passwordEncoder.encode(userDTO.password()));
+    public User create(UserRequestDTO userRequestDTO) {
+        User newUser = new User(userRequestDTO);
+        newUser.setPassword(this.passwordEncoder.encode(userRequestDTO.password()));
 
         return this.userRepository.save(newUser);
     }
@@ -49,13 +49,13 @@ public class UserService {
         return userResponseDTOList;
     }
 
-    public void update(String id, UserDTO userDTO) {
+    public void update(String id, UserRequestDTO userRequestDTO) {
         User userToBeUpdated = this.userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (userDTO.name() != null) userToBeUpdated.setName(userDTO.name());
-        if (userDTO.username() != null) userToBeUpdated.setUsername(userDTO.username());
-        if (userDTO.password() != null) userToBeUpdated.setPassword(userDTO.password());
+        if (userRequestDTO.name() != null) userToBeUpdated.setName(userRequestDTO.name());
+        if (userRequestDTO.username() != null) userToBeUpdated.setUsername(userRequestDTO.username());
+        if (userRequestDTO.password() != null) userToBeUpdated.setPassword(userRequestDTO.password());
 
         this.userRepository.save(userToBeUpdated);
     }

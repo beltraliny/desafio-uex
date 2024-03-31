@@ -1,6 +1,6 @@
 package com.github.beltraliny.testeuex.models;
 
-import com.github.beltraliny.testeuex.models.dtos.UserDTO;
+import com.github.beltraliny.testeuex.models.dtos.UserRequestDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -30,9 +30,9 @@ public class User {
 
     public User() { }
 
-    public User(UserDTO userDTO) {
-        this.name = userDTO.name();
-        this.username = userDTO.username();
+    public User(UserRequestDTO userRequestDTO) {
+        this.name = userRequestDTO.name();
+        this.username = userRequestDTO.username();
     }
 
     public String getId() {

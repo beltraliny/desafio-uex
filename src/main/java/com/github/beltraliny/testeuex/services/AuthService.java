@@ -3,7 +3,7 @@ package com.github.beltraliny.testeuex.services;
 import com.github.beltraliny.testeuex.models.User;
 import com.github.beltraliny.testeuex.models.dtos.LoginRequestDTO;
 import com.github.beltraliny.testeuex.models.dtos.LoginResponseDTO;
-import com.github.beltraliny.testeuex.models.dtos.UserDTO;
+import com.github.beltraliny.testeuex.models.dtos.UserRequestDTO;
 import com.github.beltraliny.testeuex.security.TokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,11 +36,11 @@ public class AuthService {
         return new LoginResponseDTO(user.getName(), token);
     }
 
-    public LoginResponseDTO register(UserDTO userDTO) {
-        Optional<User> user = this.userService.findByUsername(userDTO.username());
+    public LoginResponseDTO register(UserRequestDTO userRequestDTO) {
+        Optional<User> user = this.userService.findByUsername(userRequestDTO.username());
         if (user.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        User newUser = this.userService.create(userDTO);
+        User newUser = this.userService.create(userRequestDTO);
         String token = this.tokenService.createToken(newUser);
 
         return new LoginResponseDTO(newUser.getName(), token);

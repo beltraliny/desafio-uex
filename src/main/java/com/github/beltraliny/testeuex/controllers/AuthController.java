@@ -2,7 +2,7 @@ package com.github.beltraliny.testeuex.controllers;
 
 import com.github.beltraliny.testeuex.models.dtos.LoginRequestDTO;
 import com.github.beltraliny.testeuex.models.dtos.LoginResponseDTO;
-import com.github.beltraliny.testeuex.models.dtos.UserDTO;
+import com.github.beltraliny.testeuex.models.dtos.UserRequestDTO;
 import com.github.beltraliny.testeuex.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +29,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<LoginResponseDTO> register(@RequestBody UserDTO userDTO) {
-        LoginResponseDTO loginResponseDTO = authService.register(userDTO);
+    public ResponseEntity<LoginResponseDTO> register(@RequestBody UserRequestDTO userRequestDTO) {
+        LoginResponseDTO loginResponseDTO = authService.register(userRequestDTO);
         if (loginResponseDTO == null) return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok(loginResponseDTO);
