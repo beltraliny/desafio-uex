@@ -18,6 +18,7 @@ public class Contact {
     private String street;
     private String number;
     private String neighborhood;
+    private String city;
     private String state;
     private String country;
     private String complement;
@@ -40,11 +41,19 @@ public class Contact {
         this.number = contactDTO.number();
         this.neighborhood = contactDTO.neighborhood();
         this.state = contactDTO.state();
+        this.city = contactDTO.city();
         this.country = contactDTO.country();
         this.complement = contactDTO.complement();
         this.postalCode = contactDTO.postalCode();
-        this.latitude = contactDTO.latitude();
-        this.longitude = contactDTO.longitude();
+    }
+
+    public String getFullAddress() {
+        String fullAddress = this.getNumber() + " " + this.getStreet();
+        fullAddress += (this.getNeighborhood() != null) ? ", " + this.getNeighborhood() : "";
+        fullAddress += (this.getCity() != null) ? " " +  this.getCity() : "";
+        fullAddress += (this.getState() != null) ? " " +  this.getState() : "";
+
+        return fullAddress;
     }
 
     public String getId() {
@@ -101,6 +110,14 @@ public class Contact {
 
     public void setNeighborhood(String neighborhood) {
         this.neighborhood = neighborhood;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getState() {

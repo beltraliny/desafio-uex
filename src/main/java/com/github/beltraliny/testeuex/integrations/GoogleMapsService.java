@@ -36,7 +36,7 @@ public class GoogleMapsService {
 
             return googleMapsResponseDTO.findLatLong();
         } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            return null;
         }
     }
 }
