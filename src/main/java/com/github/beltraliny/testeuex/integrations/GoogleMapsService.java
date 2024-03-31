@@ -2,6 +2,7 @@ package com.github.beltraliny.testeuex.integrations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.beltraliny.testeuex.integrations.dtos.GoogleMapsResponseDTO;
+import com.github.beltraliny.testeuex.integrations.managers.IntegrationManagerService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.github.beltraliny.testeuex.integrations;
+package com.github.beltraliny.testeuex.integrations.managers;
 
 import org.springframework.stereotype.Service;
 
