@@ -40,8 +40,13 @@ public class UserService {
         return this.userRepository.findByUsername(username);
     }
 
-    public List<User> list() {
-        return userRepository.findAll();
+    public List<UserResponseDTO> list() {
+        List<User> userList = this.userRepository.findAll();
+        List<UserResponseDTO> userResponseDTOList= userList
+                .stream()
+                .map(user -> new UserResponseDTO(user.getName(), user.getUsername()))
+                .toList();
+        return userResponseDTOList;
     }
 
     public void update(String id, UserDTO userDTO) {

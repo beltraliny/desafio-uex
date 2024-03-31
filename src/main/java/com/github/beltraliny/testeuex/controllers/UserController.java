@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> list() {
-        List<User> userList = this.userService.list();
+    public ResponseEntity<List<UserResponseDTO>> list() {
+        List<UserResponseDTO> userList = this.userService.list();
         return ResponseEntity.ok(userList);
     }
 
