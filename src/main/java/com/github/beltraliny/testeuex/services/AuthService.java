@@ -35,7 +35,7 @@ public class AuthService {
         if (!isPasswordMatch) return null;
 
         String token = tokenService.createToken(user);
-        return new LoginResponseDTO(user.getName(), token);
+        return new LoginResponseDTO(user.getName(), user.getId(), token);
     }
 
     public LoginResponseDTO register(UserRequestDTO userRequestDTO) {
@@ -45,6 +45,6 @@ public class AuthService {
         User newUser = this.userService.create(userRequestDTO);
         String token = this.tokenService.createToken(newUser);
 
-        return new LoginResponseDTO(newUser.getName(), token);
+        return new LoginResponseDTO(newUser.getName(), newUser.getId(), token);
     }
 }
