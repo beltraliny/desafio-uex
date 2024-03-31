@@ -3,11 +3,9 @@ package com.github.beltraliny.testeuex.controllers;
 import com.github.beltraliny.testeuex.models.Contact;
 import com.github.beltraliny.testeuex.models.dtos.ContactDTO;
 import com.github.beltraliny.testeuex.services.ContactService;
-import org.aspectj.weaver.patterns.IToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
