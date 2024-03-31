@@ -19,10 +19,10 @@ public class ContactController {
         this.contactService = contactService;
     }
 
-    @PostMapping("/{userId}/contacts")
-    public ResponseEntity<Contact> create(@PathVariable String userId, @RequestBody ContactDTO contactDTO) {
-        String newContactId = this.contactService.create(userId, contactDTO);
-        return ResponseEntity.created(URI.create("/api/users/" + userId + "/contact/" + newContactId)).build();
+    @PostMapping("/contacts")
+    public ResponseEntity<Contact> create(@RequestHeader("Authorization") String token, @RequestBody ContactDTO contactDTO) {
+        Contact newContact = this.contactService.create(token, contactDTO);
+        return ResponseEntity.ok(newContact);
     }
 
     @GetMapping("/{userId}/contacts/{id}")
@@ -31,9 +31,9 @@ public class ContactController {
         return ResponseEntity.ok(contact);
     }
 
-    @GetMapping("/{userId}/contacts")
-    public ResponseEntity<List<Contact>> list(@PathVariable String userId) {
-        List<Contact> contactList = this.contactService.list(userId);
+    @GetMapping("/contacts")
+    public ResponseEntity<List<Contact>> list(@RequestHeader("Authorization") String token) {
+        List<Contact> contactList = this.contactService.list(token);
         return ResponseEntity.ok(contactList);
     }
 
