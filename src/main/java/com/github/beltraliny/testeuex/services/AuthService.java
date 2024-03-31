@@ -17,9 +17,9 @@ import java.util.Optional;
 @Transactional
 public class AuthService {
 
-    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
+    private final UserService userService;
 
     public AuthService(UserService userService, PasswordEncoder passwordEncoder, TokenService tokenService) {
         this.userService = userService;

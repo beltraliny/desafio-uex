@@ -22,8 +22,8 @@ public class ContactService {
 
     private final ContactRepository contactRepository;
     private final GoogleMapsService googleMapsService;
-    private final UserRepository userRepository;
     private final TokenService tokenService;
+    private final UserRepository userRepository;
 
     public ContactService(ContactRepository contactRepository, UserRepository userRepository,
                           TokenService tokenService, GoogleMapsService googleMapsService) {

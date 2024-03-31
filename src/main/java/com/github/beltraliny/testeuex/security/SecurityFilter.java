@@ -22,8 +22,8 @@ import java.util.List;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    private final UserRepository userRepository;
     private final TokenService tokenService;
+    private final UserRepository userRepository;
 
     public SecurityFilter(UserRepository userRepository, TokenService tokenService) {
         this.userRepository = userRepository;
