@@ -36,6 +36,9 @@ public class ContactService {
         User user = this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+        boolean contactAlreadyExists = this.contactRepository.existsByUserAndCpf(user, contactDTO.cpf());
+        if (contactAlreadyExists) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
         Contact contact = this.parseContact(contactDTO, user);
 
         boolean isValid = this.validateBeforeSave(contact);

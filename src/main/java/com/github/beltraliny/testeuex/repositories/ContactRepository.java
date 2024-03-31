@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, String> {
     Contact findByUserAndId(User user, String id);
+
+    boolean existsByUserAndCpf(User user, String cpf);
 }
