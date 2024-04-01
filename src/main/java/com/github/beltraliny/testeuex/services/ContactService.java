@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +57,10 @@ public class ContactService {
 
     public List<Contact> list(String token) {
         User user = this.retrieveUserFromToken(token);
-        return user.getContactList();
+        List<Contact> contactList = user.getContactList();
+        Collections.sort(contactList, Comparator.comparing(Contact::getName));
+
+        return contactList;
     }
 
     public void update(String token, ContactDTO contactDTO, String id) {
